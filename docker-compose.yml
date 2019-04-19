@@ -40,6 +40,12 @@ services:
     environment:
       - CODECLIMATE_CODE="."
 
+  server:
+    container_name: 'server'
+    build:
+      context: unbrake-server/
+      dockerfile: docker/go/Dockerfile
+
 secrets:
   api-django-secret-key:
     file: ./unbrake-api/secrets/API_DJANGO_SECRET_KEY
