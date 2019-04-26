@@ -1,8 +1,8 @@
 package main
 import "fmt"
 import "./usb"
-import "strconv"
 import "github.com/goiiot/libserial"
+import "strconv"
 
 
 var (
@@ -11,6 +11,7 @@ var (
 		libserial.WithParity(libserial.ParityNone),
 		libserial.WithHardwareFlowControl(true),
 		libserial.WithSoftwareFlowControl(true),
+        libserial.WithStopBits(libserial.StopBitOne),
 	}
 )
 
@@ -19,18 +20,13 @@ func main(){
 
     fmt.Println("Funcionou")
 
-    teste := usb.OpenConnection("/dev/pts/1", baseOptions...)
+    teste := usb.OpenConnection("/dev/pts/2", baseOptions...)
 
     fmt.Println([]byte(strconv.Itoa(10)))
-    value2, err2 := teste.Connection.Write([]byte("asdf"))
 
-
-    teste.Connection.Close()
-
-    if err2 != nil{
-        panic(err2)
+    for i:=0; i < 256; i++{
+        teste.Connection.Write([]byte(strconv.Itoa(i)))
     }
-
-    fmt.Println(value2)
+    teste.Connection.Close()
 
 }
